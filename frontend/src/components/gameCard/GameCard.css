@@ -1,0 +1,67 @@
+:root {
+  --font:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
+  --background: rgb();
+  --shadow: rgb(0, 0, 0, 0.3);
+  --modify: rgb(46, 227, 43);
+  --delete: rgb(255, 64, 64);
+}
+
+.game-item {
+  margin: 20px;
+  padding: 50px;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: 0 5px 20px var(--shadow);
+}
+
+.game-item h1 {
+  margin: 10px;
+  font-family: var(--font);
+  font-size: 50px;
+  font-weight: 900;
+}
+
+.game-item-text {
+  font-family: var(--font);
+  font-size: 18px;
+}
+
+.game-item-text-zone {
+  margin: 20px;
+}
+
+.game-item-modify {
+  background-color: white;
+  border: 4px solid var(--modify);
+  border-radius: 24px;
+  padding: 10px 20px;
+  margin: 5px;
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 700;
+  transition: 0.15s ease;
+}
+
+.game-item-modify:hover {
+  background-color: var(--modify);
+  color: white;
+}
+
+.game-item-delete {
+  background-color: white;
+  border: 4px solid var(--delete);
+  border-radius: 24px;
+  padding: 10px 20px;
+  margin: 5px;
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 700;
+  transition: 0.15s ease;
+}
+
+.game-item-delete:hover {
+  background-color: var(--delete);
+  color: white;
+}

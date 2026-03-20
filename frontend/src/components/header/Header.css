@@ -1,0 +1,28 @@
+.tp1-header {
+  border-bottom: solid black 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.tp1-header-title a {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif;
+  text-decoration: none;
+  font-size: larger;
+}
+.tp1-header-nav a {
+  text-decoration: none;
+  padding: 0.5em;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif;
+}
+.tp1-header-title a:visited {
+color:black;
+}
+.tp1-header-title a:hover {
+    color:rgb(68, 68, 68);
+}
+.tp1-header-nav a:hover {
+    transform: scale(1.025);
+}
+.tp1-header-nav a:visited {
+    color: black;
+}
