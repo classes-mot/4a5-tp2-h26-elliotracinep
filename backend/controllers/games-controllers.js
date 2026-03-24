@@ -2,7 +2,7 @@ import HttpError from "../util/http-error.js";
 import { validationResult } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
 
-const DUMMY_GAMES = [
+const PLACEHOLDER_GAMES = [
   {
     id: 1,
     title: "Catan",
@@ -34,13 +34,13 @@ const DUMMY_GAMES = [
 
 // méthode pour obtenir les jeux :
 const getGames = (req, res, next) => {
-  res.json({ games: DUMMY_GAMES });
+  res.json({ games: PLACEHOLDER_GAMES });
 };
 
 // méthode pour obtenir un jeu spécifique :
 const getGamesById = (req, res, next) => {
   const gameId = req.params.gameId;
-  const game = DUMMY_GAMES.find((game) => {
+  const game = PLACEHOLDER_GAMES.find((game) => {
     return game.id === gameId;
   });
   if (!game) {
@@ -73,7 +73,7 @@ const createGame = (req, res, next) => {
     userId: req.userData.userId || userId,
   };
 
-  DUMMY_GAMES.push(createdGame);
+  PLACEHOLDER_GAMES.push(createdGame);
   // le jeu a été créé avec succès :
   res.status(201).json({ game: createdGame });
 };
@@ -82,8 +82,8 @@ const createGame = (req, res, next) => {
 const updateGame = (req, res, next) => {
   const { title, category, minPlayers, maxPlayers, length } = req.body;
   const gameId = req.params.gameId;
-  const updatedGame = { ...DUMMY_GAMES.find((game) => game.id === gameId) };
-  const gameIndex = DUMMY_GAMES.findIndex((game) => game.id === gameId);
+  const updatedGame = { ...PLACEHOLDER_GAMES.find((game) => game.id === gameId) };
+  const gameIndex = PLACEHOLDER_GAMES.findIndex((game) => game.id === gameId);
 
   if (title) updatedGame.title = title;
   if (category) updatedGame.category = category;
@@ -91,7 +91,7 @@ const updateGame = (req, res, next) => {
   if (maxPlayers) updatedGame.maxPlayers = maxPlayers;
   if (length) updatedGame.length = length;
 
-  DUMMY_GAMES[gameIndex] = updatedGame;
+  PLACEHOLDER_GAMES[gameIndex] = updatedGame;
 
   // le jeu a été mis à jour avec succès :
   res.status(200).json({ game: updateGame });
@@ -100,7 +100,7 @@ const updateGame = (req, res, next) => {
 // méthode pour supprimer un jeu :
 const deleteGame = (req, res, next) => {
   const gameId = req.params.gameId;
-  DUMMY_GAMES = DUMMY_GAMES.filter((game) => game.id !== gameId);
+  PLACEHOLDER_GAMES = PLACEHOLDER_GAMES.filter((game) => game.id !== gameId);
   // le jeu a été supprimé avec succès :
   res.status(200).json({ message: "Le jeu a été supprimé." });
 };
