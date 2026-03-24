@@ -3,16 +3,16 @@ import { check } from "express-validator";
 import gamesController from "../controllers/games-controllers.js";
 import checkAuth from "../middleware/check-ath.js";
 
-const monRouter = express.Router();
+const gameRoutes = express.Router();
 
 // chemin pour obtenir les jeux :
-monRouter.get("/", gamesController.getGames);
+gameRoutes.get("/", gamesController.getGames);
 
 // chemin pour obtenir un jeu spécifique :
-monRouter.get("/:gameId", gamesController.getGamesById);
+gameRoutes.get("/:gameId", gamesController.getGamesById);
 
 // chemin pour ajouter un jeu :
-monRouter.post(
+gameRoutes.post(
   "/",
   checkAuth,
   [check("title").not().isEmpty(), check("category").not().isEmpty()],
@@ -20,9 +20,9 @@ monRouter.post(
 );
 
 // chemin pour modifier un jeu :
-monRouter.patch("/:gameId", checkAuth, gamesController.updateGame);
+gameRoutes.patch("/:gameId", checkAuth, gamesController.updateGame);
 
 // chemin pour supprimer un jeu :
-monRouter.delete(":gameId", checkAuth, gamesController.deleteGame);
+gameRoutes.delete(":gameId", checkAuth, gamesController.deleteGame);
 
-export default monRouter;
+export default gameRoutes;
