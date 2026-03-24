@@ -7,23 +7,6 @@ let PLACEHOLDER_USERS = [
   { id: "u2", username: "Beb2025", email: "Beb@mail.com", password: "mdp2" },
 ];
 
-// méthode pour obtenir les utilisateurs :
-const getUsers = (req, res, next) => {
-  res.json({ users: PLACEHOLDER_USERS });
-};
-
-// méthode pour obtenir un utilisateur spécifique :
-const getUserById = (req, res, next) => {
-  const userId = req.params.id;
-  const user = PLACEHOLDER_USERS.find((user) => user.id === userId);
-  if (!user) {
-    // l'utilisateur n'a pas été trouvé :
-    res.status(404).json({ message: "L'utilisateur est introuvable !" });
-  } else {
-    res.json({ user });
-  }
-};
-
 // méthode pour enregistrer un nouvel utilisateur :
 const registerUser = (req, res, next) => {
   const { username, email, password } = req.body;
@@ -85,4 +68,4 @@ const login = (req, res, next) => {
   }
 };
 
-export default { getUsers, getUserById, registerUser, login };
+export default { registerUser, login };
