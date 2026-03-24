@@ -1,7 +1,7 @@
 import express from "express";
 import { check } from "express-validator";
 import gamesController from "../controllers/games-controllers.js";
-import checkAuth from "../middleware/check-ath.js";
+import checkAuth from "../middleware/check-auth.js";
 
 const gameRoutes = express.Router();
 
