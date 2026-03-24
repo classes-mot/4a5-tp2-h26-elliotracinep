@@ -8,3 +8,5 @@ function errorHandler(error, req, res, next) {
   res.json({ message: error.message || "Une erreur inconnue est survenue !" });
 }
 export default errorHandler;
+
+// gestion des erreurs
