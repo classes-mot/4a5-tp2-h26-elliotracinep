@@ -4,13 +4,13 @@ import HttpError from "../util/http-error.js";
 const checkAuth = (res, req, next) => {
   try {
     // création du jeton d'identification
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(' ')[1];
     if (!token) {
       throw new Error("L'authentification a échoué !");
     }
     const decodedToken = jwt.verify(
       token,
-      "Clé3987snb(*&nDe90238nsdbmsnnSignature!!!!ero837vsc*(&(:5e",
+      "CléDeSignature!!!!",
     );
     req.userData = { userId: decodedToken.userId };
     next();

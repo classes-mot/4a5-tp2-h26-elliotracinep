@@ -50,7 +50,7 @@ const login = (req, res, next) => {
       // création du jeton d'identification :
       token = jwt.sign(
         { userId: identifiedUser.id, username: identifiedUser.username },
-        "Clé3987snb(*&nDe90238nsdbmsnnSignature!!!!ero837vsc*(&(:5e",
+        "CléDeSignature!!!!",
         { expiresIn: "1h" },
       );
     } catch (erreur) {
