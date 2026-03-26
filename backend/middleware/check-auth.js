@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import HttpError from "../util/http-error.js";
 
-const checkAuth = (res, req, next) => {
+const checkAuth = (req, res, next) => {
   try {
     // création du jeton d'identification
     const token = req.headers.authorization.split(' ')[1];
