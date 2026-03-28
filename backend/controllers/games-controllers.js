@@ -1,57 +1,45 @@
 import HttpError from "../util/http-error.js";
 import { validationResult } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
-
-const PLACEHOLDER_GAMES = [
-  {
-    id: 1,
-    title: "Catan",
-    category: "Stratégie",
-    minPlayers: 3,
-    maxPlayers: 4,
-    length: 60,
-    userId: "u1",
-  },
-  {
-    id: 2,
-    title: "Pandemic",
-    category: "Coopératif",
-    minPlayers: 2,
-    maxPlayers: 4,
-    length: 45,
-    userId: "u1",
-  },
-  {
-    id: 3,
-    title: "7 wonders",
-    category: "Famille",
-    minPlayers: 2,
-    maxPlayers: 7,
-    length: 30,
-    userId: "u1",
-  },
-];
+import { Game } from "../models/game.js";
 
 // méthode pour obtenir les jeux :
-const getGames = (req, res, next) => {
-  res.json({ games: PLACEHOLDER_GAMES });
+const getGames = async (req, res, next) => {
+  try {
+    games = await Game.find();
+  } catch (err) {
+    console.log(err);
+    const erreur = new HttpError("Une erreur s'est produite.", 500);
+    return next(err);
+  }
+  if (!games) {
+    return next(new HttpError("Les jeux n'ont pas été trouvés.", 404));
+  }
+  res.json({ jeux: games.toObject({ getters: true }) });
 };
 
 // méthode pour obtenir un jeu spécifique :
-const getGamesById = (req, res, next) => {
+const getGamesById = async (req, res, next) => {
   const gameId = req.params.gameId;
-  const game = PLACEHOLDER_GAMES.find((game) => {
-    return game.id === gameId;
-  });
+
+  let game;
+  try {
+    game = await Game.findById(gameId);
+  } catch (err) {
+    console.log(err);
+    const erreur = new HttpError("Une erreur s'est produite.", 500);
+    return next(err);
+  }
+
   if (!game) {
     return next(new HttpError("Le jeu n'a pas été trouvé ...", 404));
   }
 
-  res.json({ game });
+  res.json({ jeu: game.toObject({ getters: true }) });
 };
 
 // méthode pour créer un jeu :
-const createGame = (req, res, next) => {
+const createGame = async (req, res, next) => {
   const validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     console.log("Une erreur s'est produite ... ", validationErrors);
@@ -63,46 +51,62 @@ const createGame = (req, res, next) => {
     );
   }
   const { title, category, minPlayers, maxPlayers, length, userId } = req.body;
-  const createdGame = {
-    id: uuidv4(),
+  const createdGame = new Game({
     title,
     category,
     minPlayers,
     maxPlayers,
     length,
     userId: req.userData.userId || userId,
-  };
-
-  PLACEHOLDER_GAMES.push(createdGame);
+  });
+  // ajout du jeu dans la base de données :
+  try {
+    await createdGame.save();
+  } catch (err) {
+    const erreur = new HttpError(
+      "l'ajout du jeu dans la base de données a échoué.",
+      500,
+    );
+  }
   // le jeu a été créé avec succès :
   res.status(201).json({ game: createdGame });
 };
 
 // méthode pour modifier un jeu :
-const updateGame = (req, res, next) => {
-  const { title, category, minPlayers, maxPlayers, length } = req.body;
+const updateGame = async (req, res, next) => {
+  const gametoUpdate = req.body;
   const gameId = req.params.gameId;
-  const updatedGame = { ...PLACEHOLDER_GAMES.find((game) => game.id === gameId) };
-  const gameIndex = PLACEHOLDER_GAMES.findIndex((game) => game.id === gameId);
 
-  if (title) updatedGame.title = title;
-  if (category) updatedGame.category = category;
-  if (minPlayers) updatedGame.minPlayers = minPlayers;
-  if (maxPlayers) updatedGame.maxPlayers = maxPlayers;
-  if (length) updatedGame.length = length;
-
-  PLACEHOLDER_GAMES[gameIndex] = updatedGame;
-
-  // le jeu a été mis à jour avec succès :
-  res.status(200).json({ game: updateGame });
+  try {
+    const updatedGame = await Game.findByIdAndUpdate(gameId, gametoUpdate, {
+      new: true,
+    });
+    if (!updatedGame) {
+      return res.status(404).json({ message: "Le jeu est introuvable." });
+    }
+    // le jeu a été mis à jour avec succès :
+    res.status(200).json({ game: updatedGame.toObject({ getters: true }) });
+  } catch (err) {
+    res.status(500).json({ msg: "Erreur lors de la modification du jeu." });
+  }
 };
 
 // méthode pour supprimer un jeu :
-const deleteGame = (req, res, next) => {
+const deleteGame = async (req, res, next) => {
   const gameId = req.params.gameId;
-  PLACEHOLDER_GAMES = PLACEHOLDER_GAMES.filter((game) => game.id !== gameId);
-  // le jeu a été supprimé avec succès :
-  res.status(200).json({ message: "Le jeu a été supprimé." });
+
+  try {
+    const game = await Game.findByIdAndDelete(gameId);
+
+    if (!task) {
+      return res.status(404).json({ msg: "Le jeu est introuvable." });
+    }
+    // le jeu a été supprimé avec succès :
+    res.status(200).json({ message: "Le jeu a été supprimé." });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "Erreur lors de la suppression du jeu." });
+  }
 };
 
 export default {

@@ -3,6 +3,9 @@ import gameRoutes from "./routes/game-routes.js";
 import userRoutes from "./routes/user-routes.js";
 import errorHandler from "./handler/error-handler.js";
 import cors from "cors";
+import { connectDB } from "./util/bd.js";
+
+await connectDB();
 
 const app = express();
 app.use(cors());
