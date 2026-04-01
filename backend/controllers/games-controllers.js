@@ -5,6 +5,7 @@ import { Game } from "../models/game.js";
 
 // méthode pour obtenir les jeux :
 const getGames = async (req, res, next) => {
+  let games;
   try {
     games = await Game.find();
   } catch (err) {
@@ -15,7 +16,7 @@ const getGames = async (req, res, next) => {
   if (!games) {
     return next(new HttpError("Les jeux n'ont pas été trouvés.", 404));
   }
-  res.json({ jeux: games.toObject({ getters: true }) });
+  res.json({ jeux: games.map((game) => game.toObject({ getters: true })) });
 };
 
 // méthode pour obtenir un jeu spécifique :
@@ -94,11 +95,11 @@ const updateGame = async (req, res, next) => {
 // méthode pour supprimer un jeu :
 const deleteGame = async (req, res, next) => {
   const gameId = req.params.gameId;
-
+  let game;
   try {
-    const game = await Game.findByIdAndDelete(gameId);
+    game = await Game.findByIdAndDelete(gameId);
 
-    if (!task) {
+    if (!game) {
       return res.status(404).json({ msg: "Le jeu est introuvable." });
     }
     // le jeu a été supprimé avec succès :

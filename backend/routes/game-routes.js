@@ -23,6 +23,6 @@ gameRoutes.post(
 gameRoutes.patch("/:gameId", checkAuth, gamesController.updateGame);
 
 // chemin pour supprimer un jeu :
-gameRoutes.delete(":gameId", checkAuth, gamesController.deleteGame);
+gameRoutes.delete("/:gameId", checkAuth, gamesController.deleteGame);
 
 export default gameRoutes;

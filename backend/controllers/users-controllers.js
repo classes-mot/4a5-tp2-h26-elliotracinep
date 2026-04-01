@@ -1,71 +1,71 @@
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 import HttpError from "../handler/error-handler.js";
-
-let PLACEHOLDER_USERS = [
-  { id: "u1", username: "Bob4023", email: "Bob@mail.com", password: "mdp1" },
-  { id: "u2", username: "Beb2025", email: "Beb@mail.com", password: "mdp2" },
-];
+import { User } from "../models/user.js";
 
 // méthode pour enregistrer un nouvel utilisateur :
-const registerUser = (req, res, next) => {
+const registerUser = async (req, res, next) => {
   const { username, email, password } = req.body;
-  const userPasDispo = PLACEHOLDER_USERS.find(
-    (user) => user.username === username,
-  );
-  // le nom d'utilisateur est déjà utilisé :
-  if (userPasDispo) {
-    res
-      .status(422)
-      .json({ message: "Ce nom d'utilisateur n'est pas disponible !" });
-    return;
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ username: username });
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("La création de l'utilisateur a échoué.", 500);
+    return next(error);
   }
-  const createdUser = {
-    id: uuidv4(),
+  console.log("Utilisateur existant : ", existingUser);
+  if (existingUser) {
+    const error = new HttpError("L'utilisateur existe déjà.", 422);
+    return next(error);
+  }
+
+  const createdUser = new User({
     username,
     email,
     password,
-  };
-  setTimeout(() => {
-    PLACEHOLDER_USERS.push(createdUser);
-    // l'utilisateur a été créé avec succès :
-    res.status(201).json({ user: createdUser });
   });
-};
-// méthode pour se connecter :
-const login = (req, res, next) => {
-  const { username, password } = req.body;
-  const identifiedUser = PLACEHOLDER_USERS.find(
-    (user) => user.username === username && user.password === password,
-  );
-  console.log("Une utilisateur s'est connecté : ", username, password);
-  if (!identifiedUser) {
-    // la connexion n'a pas été établie :
-    res
-      .status(401)
-      .json({ message: "L'identification a échoué, veuillez réessayer." });
-  } else {
-    let token;
-    try {
-      // création du jeton d'identification :
-      token = jwt.sign(
-        { userId: identifiedUser.id, username: identifiedUser.username },
-        "CléDeSignature!!!!",
-        { expiresIn: "1h" },
-      );
-    } catch (erreur) {
-      const error = new HttpError("La génération du jeton a échoué.", 500);
-      return next(error);
-    }
-    // la connexion s'est faite avec succès :
-    res.json({
-      message: "La connexion est réussie.",
-      userId: identifiedUser.id,
-      username: identifiedUser.username,
-      email: identifiedUser.email,
-      token: token,
-    });
+  try {
+    await createdUser.save();
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("La création de l'utilisateur a échoué.", 500);
+    return next(error);
   }
+  // l'utilisateur a été créé avec succès :
+  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
+};
+
+// méthode pour se connecter :
+const login = async (req, res, next) => {
+  const { username, password } = req.body;
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ username });
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("La connexion a échoué.", 500);
+    return next(error);
+  }
+  if (!existingUser || existingUser.password !== password) {
+    const error = new HttpError("L'identification a échoué.", 401);
+    return next(error);
+  }
+
+  let token;
+  try {
+    token = jwt.sign(
+      { userId: existingUser.id, username: existingUser.username },
+      "CléDeSignature!!!!",
+      { expiresIn: "1h" },
+    );
+  } catch (err) {
+    const error = new HttpError("Erreur lors de la génération du jeton.", 500);
+    return next(error);
+  }
+  res
+    .status(200)
+    .json({ userId: existingUser.id, username: existingUser.username, token });
 };
 
 export default { registerUser, login };
