@@ -4,7 +4,7 @@ let estConectee = false;
 
 export const connectDB = async () => {
   if (estConectee) return;
-  let uri = "mongodb://localhost:27017/bdTP02";
+  let uri = "mongodb://localhost:27017/elliot_rp_BD";
 
   try {
     await mongoose.connect(uri);

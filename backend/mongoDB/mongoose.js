@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { Game } from "../models/game";
 import { User } from "../models/user";
 
-const url = "mongodb://localhost:27017/TP02";
+const url = "mongodb://localhost:27017/elliot_rp_BD";
 
 mongoose
   .connect(url)
