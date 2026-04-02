@@ -1,0 +1,219 @@
+{
+  "info": {
+    "_postman_id": "2582a366-06d3-4685-8b39-244e5104bd7e",
+    "name": "TP02",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53338967",
+    "_collection_link": "https://go.postman.co/collection/53338967-2582a366-06d3-4685-8b39-244e5104bd7e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "/api/jeux",
+      "item": [
+        {
+          "name": "Add jeu",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWNlYTE1NTNmMzg2Mjg0ZTg5ODgxYjEiLCJ1c2VybmFtZSI6IkJlYjIwMjUiLCJpYXQiOjE3NzUxMzg0NzQsImV4cCI6MTc3NTE0MjA3NH0.0VnBYyXGlnjLYtU5Z0UelTaqe0NCnUSWXhPxSaq3pTE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Un Bon Jeu\",\r\n    \"category\": \"Famille\",\r\n    \"minPlayers\": 4,\r\n    \"maxPlayers\":8,\r\n    \"length\":60\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/jeux/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "jeux",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Jeux",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/jeux",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "jeux"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Jeu (ID)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/jeux/69cea1a33f386284e89881b8",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "jeux",
+                "69cea1a33f386284e89881b8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "MAJ Jeu",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWNlYTE1NTNmMzg2Mjg0ZTg5ODgxYjEiLCJ1c2VybmFtZSI6IkJlYjIwMjUiLCJpYXQiOjE3NzUxMzg0NzQsImV4cCI6MTc3NTE0MjA3NH0.0VnBYyXGlnjLYtU5Z0UelTaqe0NCnUSWXhPxSaq3pTE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"MISE À JOUR\",\r\n    \"category\": \"catégorie\",\r\n    \"minPlayers\": 0,\r\n    \"maxPlayers\":0,\r\n    \"length\":0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/jeux/69cea1a33f386284e89881b8",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "jeux",
+                "69cea1a33f386284e89881b8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DEL Supprimer Jeu",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWNlYTE1NTNmMzg2Mjg0ZTg5ODgxYjEiLCJ1c2VybmFtZSI6IkJlYjIwMjUiLCJpYXQiOjE3NzUxMzg0NzQsImV4cCI6MTc3NTE0MjA3NH0.0VnBYyXGlnjLYtU5Z0UelTaqe0NCnUSWXhPxSaq3pTE",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/jeux/69cea1a33f386284e89881b8",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "jeux",
+                "69cea1a33f386284e89881b8"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/api/users",
+      "item": [
+        {
+          "name": "Inscription (USER)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"Beb2025\",\r\n  \"email\": \"Beb@mail.com\",\r\n  \"password\": \"mdp2\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Connexion (USER)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\":\"Beb2025\",\r\n    \"password\": \"mdp2\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
